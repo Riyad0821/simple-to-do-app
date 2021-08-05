@@ -4,10 +4,10 @@ import './App.css';
 //To Do list component
 function Todo({ todo, index, completeTodo, deleteTodo }) {
   return (
-    <div className="todo-list">
+    <div className="todo-list" key={index}>
       <input type="checkbox" onChange={() => completeTodo(index)} className="todo-list__checkbox" />
-      <p style={{ color: todo.isCompleted ? "green" : "blue" }}>{todo.task}</p>
-      <button onClick={() => deleteTodo(index)}>Delete</button>
+      <p className="todo-list__item" style={{ color: todo.isCompleted ? "green" : "blue" }}>{todo.task}</p>
+      <button className="todo-list__deleteBtn" onClick={() => deleteTodo(index)}>Delete</button>
     </div>
   );
 }
@@ -60,6 +60,7 @@ function App() {
 
   return (
     <div className="todo-app">
+      <h1 className="todo-app__title">Simple To Do Application</h1>
       <TodoForm addTodo={addTodo} />
       <div className="todo-app__list">
         {todos.map((todo, index) => (<Todo key={index} index={index} todo={todo} completeTodo={completeTodo} deleteTodo={deleteTodo}

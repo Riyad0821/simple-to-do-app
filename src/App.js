@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import './App.css';
 
-function Todo({ todo }) {
+//To Do list component
+function Todo({ todo, index, completeTodo, deleteTodo }) {
   return (
-    <div className="todo">
-      {todo.task}
+    <div className="todo-list">
+      <input type="checkbox" onChange={() => completeTodo(index)} className="todo-list__checkbox" />
+      <p style={{ color: todo.isCompleted ? "green" : "blue" }}>{todo.task}</p>
+      <button onClick={() => deleteTodo(index)}>Delete</button>
     </div>
   );
 }
 
+//To do list form component
 function TodoForm({ addTodo }) {
   const [newTodo, setNewTodo] = useState('');
 
@@ -30,11 +34,10 @@ function TodoForm({ addTodo }) {
   );
 }
 
-
 function App() {
   const [todos, setTodos] = useState([
-    { task: "Create todo app" },
-    { task: "Prepare for the interview" }
+    { task: "Create todo app", isCompleted: false },
+    { task: "Prepare for the interview", isCompleted: false }
   ]);
 
   const addTodo = task => {
@@ -43,14 +46,26 @@ function App() {
     console.log(newTodos);
   };
 
+  const completeTodo = index => {
+    const newTodos = [...todos];
+    newTodos[index].isCompleted = !newTodos[index].isCompleted;
+    setTodos(newTodos);
+  };
+
+  const deleteTodo = index => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  };
+
   return (
-    <div className="">
-      <div className="todo__list">
-        {todos.map((todo, index) => (<Todo key={index} index={index} todo={todo}
+    <div className="todo-app">
+      <TodoForm addTodo={addTodo} />
+      <div className="todo-app__list">
+        {todos.map((todo, index) => (<Todo key={index} index={index} todo={todo} completeTodo={completeTodo} deleteTodo={deleteTodo}
         />
         ))}
       </div>
-      <TodoForm addTodo={addTodo} />
     </div>
   );
 }
